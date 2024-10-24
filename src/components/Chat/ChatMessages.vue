@@ -1,28 +1,28 @@
 <script setup>
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, defineProps } from "vue";
 
 const messages = reactive([]);
-
-onMounted(() => {
-    fetch('https://nodejsmongodbtrash-8098.onrender.com/api/v1/messages')
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            messages.push(...data.data.messages);
-        });
+const props = defineProps({
+  messages: Array,
 });
 
+onMounted(() => {
+  fetch("https://nodejsmongodbtrash-8098.onrender.com/api/v1/messages")
+    .then((response) => response.json())
+    .then((data) => {
+      messages.push(...data.data.messages);
+    });
+});
 </script>
 
 <template>
-    <h1>Comments</h1>
-    <ul>
-        <li v-for="message in messages">
-            <strong>{{ message.user }}</strong>: {{ message.text }}
-        </li>
-    </ul>
+  <h1>Chat message</h1>
+  <ul>
+    <li v-for="message in [...messages, ...props.messages]" :key="message.id">
+      <strong>{{ message.user }}</strong
+      >: {{ message.text }}
+    </li>
+  </ul>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

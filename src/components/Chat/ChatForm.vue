@@ -1,19 +1,23 @@
 <script setup>
-    import { ref, reactive } from 'vue';
+import { ref } from "vue";
+import { defineEmits } from "vue";
 
-    function doit() {
-        
-    }
+const message = ref("");
+const emit = defineEmits(["sendMessage"]);
 
+function doit() {
+  if (message.value.trim() !== "") {
+    emit("sendMessage", { user: "Helia", text: message.value });
+    message.value = "";
+  }
+}
 </script>
 
 <template>
-    <div class="form">
-        <input type="text" placeholder="Type your message here.."/>
-        <button @click="doit" >Send</button>
-    </div>
+  <div class="form">
+    <input v-model="message" type="text" placeholder="Type your message..." />
+    <button @click.prevent="doit">Send</button>
+  </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
